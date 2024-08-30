@@ -1,0 +1,28 @@
+version: "1"
+
+package:
+  id: io.github.sigviewer
+  name: sigviewer
+  version: 0.6.5.1
+  kind: app
+  description: |
+    SigViewer is a viewing application for biosignals.
+
+command:
+  - /opt/apps/io.github.sigviewer/files/bin/sigviewer
+
+base: org.deepin.foundation/23.0.0
+runtime: org.deepin.Runtime/23.0.1
+
+sources:
+  - kind: git
+    url: https://github.com/wjyrich/sigviewer.git
+    version: master
+    commit: 948529caa26975880feb38394795f059af4ae995
+
+build: |
+  cd /project/linglong/sources/sigviewer.git
+  git apply ../../../0001-install.patch
+  qmake -makefile PREFIX=${PREFIX} LIB_INSTALL_DIR=${PREFIX}/lib/${TRIPLET}
+  make -j$(nproc)
+  make install
